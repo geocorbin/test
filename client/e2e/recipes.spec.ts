@@ -1,5 +1,9 @@
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
 import { test, expect } from '@playwright/test'
 import { signUpNewUser } from './fixtures'
+
+const TEST_IMAGE = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures', 'test-image.png')
 
 test.describe('Recipe CRUD', () => {
   test('a creator can create, edit, and delete a recipe', async ({ page }) => {
@@ -54,6 +58,23 @@ test.describe('Recipe CRUD', () => {
     await expect(guestPage.getByText('Scramble the eggs.')).toBeVisible()
 
     await guestContext.close()
+  })
+
+  test('a creator can upload an image for a recipe', async ({ page }) => {
+    await signUpNewUser(page)
+    const title = `Image Test ${Date.now()}`
+
+    await page.getByRole('button', { name: 'Create Recipe' }).click()
+    await page.getByLabel('Title').fill(title)
+    await page.getByLabel(/Ingredients/).fill('Flour, 1 cup')
+    await page.getByLabel(/Instructions/).fill('Mix it.')
+    await page.getByLabel('Image').setInputFiles(TEST_IMAGE)
+    await expect(page.getByAltText('Recipe preview')).toBeVisible()
+
+    await page.getByRole('button', { name: 'Create Recipe' }).click()
+
+    await expect(page.getByText('Your recipe was successfully created.')).toBeVisible()
+    await expect(page.getByAltText(title)).toBeVisible()
   })
 
   test('search shows a "no results" message for an unmatched query', async ({ page }) => {

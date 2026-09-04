@@ -215,6 +215,46 @@ textarea {
   max-width: 420px;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.image-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  height: 160px;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--green-300);
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: var(--surface);
+}
+
+.image-upload img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-upload-error {
+  border-color: var(--red-300);
+}
+
+.image-upload-actions {
+  display: flex;
+  gap: 16px;
+}
+
 /* Buttons and links */
 .btn {
   display: inline-flex;

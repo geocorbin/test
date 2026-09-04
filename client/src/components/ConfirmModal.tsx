@@ -8,8 +8,8 @@ interface ConfirmModalProps {
 
 export function ConfirmModal({ title, description, confirmLabel, onConfirm, onCancel }: ConfirmModalProps) {
   return (
-    <div className="modal-overlay" onClick={onCancel}>
-      <div className="modal" onClick={(event) => event.stopPropagation()}>
+    <div className="modal-overlay">
+      <div className="modal">
         <h3>{title}</h3>
         <p className="text-muted">{description}</p>
         <div className="modal-actions">

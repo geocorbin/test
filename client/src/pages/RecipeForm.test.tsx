@@ -5,9 +5,11 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { RecipeForm } from './RecipeForm'
 import { AuthProvider } from '../context/AuthContext'
 import * as recipesApi from '../api/recipes'
+import * as imageUtils from '../utils/image'
 import type { Recipe } from '../types'
 
 vi.mock('../api/recipes')
+vi.mock('../utils/image')
 
 function renderForm(route: string) {
   return render(
@@ -79,5 +81,38 @@ describe('RecipeForm', () => {
     expect(await screen.findByDisplayValue('Soup')).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Edit Recipe' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
+  })
+
+  it('rejects an image that is not PNG or JPG', async () => {
+    renderForm('/recipes/new')
+    const file = new File(['data'], 'photo.gif', { type: 'image/gif' })
+
+    await userEvent.upload(screen.getByLabelText('Image'), file)
+
+    expect(screen.getByText('Please upload an image in the valid format (PNG, JPG)')).toBeInTheDocument()
+    expect(imageUtils.readImageFile).not.toHaveBeenCalled()
+  })
+
+  it('rejects an image over 2MB', async () => {
+    renderForm('/recipes/new')
+    const bigFile = new File([new Uint8Array(3 * 1024 * 1024)], 'photo.png', { type: 'image/png' })
+
+    await userEvent.upload(screen.getByLabelText('Image'), bigFile)
+
+    expect(screen.getByText('Please upload an image less than 2MB')).toBeInTheDocument()
+    expect(imageUtils.readImageFile).not.toHaveBeenCalled()
+  })
+
+  it('previews a valid image and allows removing it', async () => {
+    vi.mocked(imageUtils.readImageFile).mockResolvedValueOnce('data:image/jpeg;base64,mock')
+    renderForm('/recipes/new')
+    const file = new File(['data'], 'photo.png', { type: 'image/png' })
+
+    await userEvent.upload(screen.getByLabelText('Image'), file)
+
+    expect(await screen.findByAltText('Recipe preview')).toHaveAttribute('src', 'data:image/jpeg;base64,mock')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Remove' }))
+    expect(screen.queryByAltText('Recipe preview')).not.toBeInTheDocument()
   })
 })

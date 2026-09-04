@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Layout } from '../components/Layout'
 import { RecipeCard } from '../components/RecipeCard'
 import { getAllRecipes } from '../api/recipes'
@@ -12,17 +12,14 @@ export function RecipeList() {
     getAllRecipes().then(setRecipes)
   }, [])
 
-  const filteredRecipes = useMemo(() => {
-    if (!recipes) return []
-    const term = query.trim().toLowerCase()
-    if (!term) return recipes
-    return recipes.filter(
-      (recipe) =>
-        recipe.title.toLowerCase().includes(term) ||
-        recipe.tags.some((tag) => tag.toLowerCase().includes(term)) ||
-        recipe.ingredients.some((ingredient) => ingredient.name.toLowerCase().includes(term)),
-    )
-  }, [recipes, query])
+  const term = query.trim().toLowerCase()
+  const filteredRecipes = (recipes ?? []).filter(
+    (recipe) =>
+      !term ||
+      recipe.title.toLowerCase().includes(term) ||
+      recipe.tags.some((tag) => tag.toLowerCase().includes(term)) ||
+      recipe.ingredients.some((ingredient) => ingredient.name.toLowerCase().includes(term)),
+  )
 
   return (
     <Layout>

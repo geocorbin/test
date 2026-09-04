@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Layout } from '../components/Layout'
 import { RecipeCard } from '../components/RecipeCard'
 import { ConfirmModal } from '../components/ConfirmModal'
@@ -10,11 +10,10 @@ import type { Recipe } from '../types'
 export function Dashboard() {
   const { user } = useAuth()
   const navigate = useNavigate()
-  const location = useLocation()
 
   const [recipes, setRecipes] = useState<Recipe[] | null>(null)
   const [recipeToDelete, setRecipeToDelete] = useState<Recipe | null>(null)
-  const [message, setMessage] = useState((location.state as { message?: string } | null)?.message ?? '')
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     getAllRecipes().then(setRecipes)
@@ -23,9 +22,9 @@ export function Dashboard() {
   const myRecipes = recipes?.filter((recipe) => recipe.ownerId === user?._id) ?? []
 
   async function handleConfirmDelete() {
-    if (!recipeToDelete) return
+    if (!recipeToDelete || !recipes) return
     await deleteRecipe(recipeToDelete._id)
-    setRecipes((prev) => prev!.filter((recipe) => recipe._id !== recipeToDelete._id))
+    setRecipes(recipes.filter((recipe) => recipe._id !== recipeToDelete._id))
     setRecipeToDelete(null)
     setMessage('Your recipe was successfully deleted.')
   }

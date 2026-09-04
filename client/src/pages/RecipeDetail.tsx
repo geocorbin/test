@@ -58,12 +58,9 @@ export function RecipeDetail() {
       <section className="section">
         <h2>Instructions</h2>
         <ol className="numbered-list">
-          {recipe.instructions
-            .slice()
-            .sort((a, b) => a.step - b.step)
-            .map((instruction) => (
-              <li key={instruction.step}>{instruction.description}</li>
-            ))}
+          {recipe.instructions.map((instruction) => (
+            <li key={instruction.step}>{instruction.description}</li>
+          ))}
         </ol>
       </section>
 
