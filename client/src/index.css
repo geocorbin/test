@@ -1,68 +1,435 @@
+/* Design tokens (from Figma) */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --neutral-100: #ffffff;
+  --neutral-200: #f5f5f5;
+  --neutral-300: #b0b0b0;
+  --neutral-400: #707070;
+  --neutral-500: #3d3d3d;
+  --neutral-600: #1b1b1b;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --green-100: #c1e0a6;
+  --green-200: #96cc67;
+  --green-300: #6ba539;
+  --green-400: #57852f;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --red-100: #f2bcbc;
+  --red-300: #c62828;
+
+  --yellow-100: #fbeabf;
+  --yellow-200: #f0c048;
+  --yellow-300: #866208;
+
+  --bg: var(--yellow-100);
+  --surface: var(--neutral-100);
+  --text: var(--neutral-600);
+  --text-muted: var(--neutral-400);
+  --border: var(--neutral-300);
+
+  --font-size-h1: 40px;
+  --font-size-h2: 28px;
+  --font-size-h3: 20px;
+  --font-size-body: 18px;
+  --font-size-sm: 14px;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+@media (min-width: 768px) {
+  :root {
+    --font-size-h1: 24px;
+    --font-size-h2: 20px;
+    --font-size-h3: 18px;
+    --font-size-body: 16px;
+    --font-size-sm: 12px;
+  }
 }
-a:hover {
-  color: #535bf2;
+
+/* Reset */
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+  margin: 0;
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: var(--font-size-h1);
+  font-weight: 600;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: 600;
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+  font-weight: 600;
+  margin: 0;
+}
+
+a {
+  color: var(--green-300);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-sm {
+  font-size: var(--font-size-sm);
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Layout */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.main-narrow {
+  max-width: 420px;
+}
+
+/* Header */
+.header {
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.header-link {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.header-link:hover {
+  color: var(--green-300);
+}
+
+/* Card */
+.card {
+  background-color: var(--surface);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(27, 27, 27, 0.08);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+}
+
+/* Forms */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+}
+
+label {
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+}
+
+input,
+textarea {
   font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  font-size: var(--font-size-body);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  background-color: var(--surface);
+  color: var(--text);
+  width: 100%;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--green-300);
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form-error {
+  color: var(--red-300);
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+.search-input {
+  max-width: 420px;
+}
+
+/* Buttons and links */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: var(--font-size-body);
+  cursor: pointer;
+  border: 2px solid transparent;
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--green-300);
+  color: var(--neutral-100);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--green-400);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border-color: var(--green-300);
+  color: var(--green-300);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--green-100);
+}
+
+.btn-danger {
+  background-color: var(--red-300);
+  color: var(--neutral-100);
+}
+
+.center-link {
+  text-align: center;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: var(--green-300);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px;
+  text-decoration: underline;
+}
+
+.link-button-danger {
+  color: var(--red-300);
+}
+
+/* Recipes */
+.section-title {
+  margin-top: 8px;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.recipe-card {
+  background-color: var(--surface);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(27, 27, 27, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-card-image {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.recipe-card-image-empty {
+  background-color: var(--neutral-200);
+}
+
+.recipe-card-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recipe-card-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.recipe-card-link {
+  margin-top: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.recipe-detail-image {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.empty-box {
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bulleted-list {
+  list-style: disc;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.numbered-list {
+  list-style: decimal;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Tags */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tag {
+  display: inline-block;
+  background-color: var(--yellow-200);
+  color: var(--yellow-300);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(27, 27, 27, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 100;
+}
+
+.modal {
+  background-color: var(--surface);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 360px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* Toast */
+.toast {
+  background-color: var(--green-100);
+  color: var(--green-400);
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.breadcrumb a {
+  color: var(--text-muted);
 }
