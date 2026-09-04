@@ -4,16 +4,11 @@ import userEvent from '@testing-library/user-event'
 import { Dashboard } from './Dashboard'
 import { renderWithProviders } from '../test/renderWithProviders'
 import { setToken } from '../utils/authStorage'
+import { makeToken } from '../test/makeToken'
 import * as recipesApi from '../api/recipes'
 import type { Recipe } from '../types'
 
 vi.mock('../api/recipes')
-
-function makeToken(userId: string): string {
-  const base64url = (obj: object) => btoa(JSON.stringify(obj)).replace(/\+/g, '-').replace(/\//g, '_')
-  const exp = Math.floor(Date.now() / 1000) + 3600
-  return `${base64url({ alg: 'HS256' })}.${base64url({ user: { _id: userId, email: 'a@b.com' }, exp })}.sig`
-}
 
 const myRecipe: Recipe = {
   _id: 'r1',
@@ -32,7 +27,7 @@ describe('Dashboard', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     localStorage.clear()
-    setToken(makeToken('user-1'))
+    setToken(makeToken({ _id: 'user-1', email: 'a@b.com' }))
   })
 
   it("shows only the logged-in user's recipes", async () => {

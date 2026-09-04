@@ -4,17 +4,12 @@ import userEvent from '@testing-library/user-event'
 import { Profile } from './Profile'
 import { renderWithProviders } from '../test/renderWithProviders'
 import { setToken, getToken } from '../utils/authStorage'
-
-function makeToken(): string {
-  const base64url = (obj: object) => btoa(JSON.stringify(obj)).replace(/\+/g, '-').replace(/\//g, '_')
-  const exp = Math.floor(Date.now() / 1000) + 3600
-  return `${base64url({ alg: 'HS256' })}.${base64url({ user: { _id: '1', email: 'user@example.com' }, exp })}.sig`
-}
+import { makeToken } from '../test/makeToken'
 
 describe('Profile', () => {
   beforeEach(() => {
     localStorage.clear()
-    setToken(makeToken())
+    setToken(makeToken({ _id: '1', email: 'user@example.com' }))
   })
 
   it("displays the logged-in user's email", () => {

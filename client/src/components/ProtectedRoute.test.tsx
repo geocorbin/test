@@ -4,11 +4,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { ProtectedRoute } from './ProtectedRoute'
 import { AuthProvider } from '../context/AuthContext'
 import { setToken } from '../utils/authStorage'
-
-function makeToken(exp: number): string {
-  const base64url = (obj: object) => btoa(JSON.stringify(obj)).replace(/\+/g, '-').replace(/\//g, '_')
-  return `${base64url({ alg: 'HS256' })}.${base64url({ user: { _id: '1', email: 'a@b.com' }, exp })}.sig`
-}
+import { makeToken } from '../test/makeToken'
 
 function renderProtected(initialPath: string) {
   return render(
@@ -36,7 +32,7 @@ describe('ProtectedRoute', () => {
   })
 
   it('renders the nested route when authenticated', () => {
-    setToken(makeToken(Math.floor(Date.now() / 1000) + 3600))
+    setToken(makeToken({ _id: '1', email: 'a@b.com' }))
     renderProtected('/dashboard')
     expect(screen.getByText('Dashboard Page')).toBeInTheDocument()
   })
